@@ -57,12 +57,6 @@ public class MainActivity extends SherlockActivity
 	 * The logging TAG
 	 */
 	private static final String TAG = "MainActivity";
-    public static final String MARKET_LINK ="market://details?id=com.asksven.mytrack";
-    public static final String TWITTER_LINK ="https://twitter.com/#!/asksven";
-
-	/** id for the account dialog */
-	public static final int DIALOG_ACCOUNTS = 0;
-
 	
 	/**
 	 * a progess dialog to be used for long running tasks
@@ -289,7 +283,7 @@ public class MainActivity extends SherlockActivity
 			tvInterval.setText(DateUtils.formatDurationLong(service.getInterval()) );
 			
 			long updated = service.getUpdated();
-			long since = service.getUpdated(); //System.currentTimeMillis() - service.getUpdated();
+			long since = service.getUpdated(); 
 			if (updated != 0)
 			{
 				tvUpdated.setText(DateUtils.formatShort(since));
@@ -318,7 +312,7 @@ public class MainActivity extends SherlockActivity
 		if( !LocationService.isServiceRunning(this) )
 		{
 			Intent i = new Intent();
-			i.setClassName( "com.asksven.betterlatitude", LocationService.SERVICE_NAME );
+			i.setClassName( "com.asksven.mytrack", LocationService.SERVICE_NAME );
 			startService( i );
 			Log.i(getClass().getSimpleName(), "startService()");
 		}

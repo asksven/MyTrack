@@ -49,8 +49,6 @@ public class AltitudeConstants
 		if (m_instance == null)
 		{
 			m_instance = new AltitudeConstants();
-			m_instance.STATUS_UPDATE_PENDING 		= ctx.getString(R.string.status_update_pending);
-			m_instance.STATUS_UPDATE_BUFFERED 		= ctx.getString(R.string.status_update_buffered);
 			m_instance.STATUS_NOTIFICATION_ON 		= ctx.getString(R.string.status_notification_on);
 			m_instance.STATUS_NOT_LOGGED_IN	 		= ctx.getString(R.string.status_not_logged_in);
 			m_instance.STATUS_SERVICE_NOT_STARTED 	= ctx.getString(R.string.status_service_not_started);

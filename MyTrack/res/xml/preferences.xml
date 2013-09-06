@@ -8,14 +8,6 @@
         android:summary="@string/pref_start_on_boot_summary"
         android:title="@string/pref_start_on_boot_title" />
 
-    <ListPreference
-        android:defaultValue="1"
-        android:entries="@array/themeLabels"
-        android:entryValues="@array/themeValues"
-        android:key="theme"
-        android:summary="@string/pref_theme_summary"
-        android:title="@string/pref_theme_title" />
-
     <CheckBoxPreference
         android:defaultValue="true"
         android:enabled="true"
@@ -138,28 +130,4 @@
             android:summary="@string/pref_auto_on_when_gps_summary"
             android:title="@string/pref_auto_on_when_gps_title" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/pref_category_logging" >
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:enabled="true"
-            android:key="log_location"
-            android:summary="@string/pref_log_location_summary"
-            android:title="@string/pref_log_location_title" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:enabled="true"
-            android:key="own_logfile"
-            android:summary="@string/pref_own_logfile_summary"
-            android:title="@string/pref_own_logfile_title" />
-    </PreferenceCategory>
-    <!-- <PreferenceCategory android:title="Advanced"> -->
-    <!-- <CheckBoxPreference -->
-    <!-- android:key="use_account_manager" -->
-    <!-- android:summary="Use integrated accounts" -->
-    <!-- android:title="Use AccountManager" -->
-    <!-- android:defaultValue="false" -->
-    <!-- android:enabled="true" -->
-    <!-- /> -->
-    <!-- </PreferenceCategory> -->
-
 </PreferenceScreen>
