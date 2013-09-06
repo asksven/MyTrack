@@ -1,0 +1,14 @@
+Credits:
+This project makes use of:
+- ActionbarSherlock: https://github.com/JakeWharton/ActionBarSherlock
+- CardsUI: https://github.com/Androguide/cardsui-for-android 
+
+Building MyTrack
+
+MyTrack builds with ant
+To build it requires dependent projects (libraries) to be built with ant as well:
+- ActionbarSherlock
+- CardsUI
+
+If dependent build.xml files are missing they can be create with "android update project" (see http://www.androidengineer.com/2010/06/using-ant-to-automate-building-android.html for more info)
+
