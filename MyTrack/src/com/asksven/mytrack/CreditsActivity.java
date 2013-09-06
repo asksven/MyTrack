@@ -17,6 +17,7 @@ package com.asksven.mytrack;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockListActivity;
+import com.asksven.mytrack.utils.GooglePlayCard;
 import com.fima.cardsui.views.CardUI;
 
 import android.content.SharedPreferences;

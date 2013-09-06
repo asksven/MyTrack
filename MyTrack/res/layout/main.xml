@@ -15,7 +15,7 @@
 
     <TextView
         android:id="@+id/textViewHint"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Hint goes here"
@@ -193,7 +193,7 @@
             ads:adSize="BANNER"
             ads:adUnitId="a14e836ef862284"
             ads:loadAdOnCreate="false"
-            android:gravity="bottom" />
+            android:gravity="bottom|center_horizontal" />
     </LinearLayout>
 
 </LinearLayout>

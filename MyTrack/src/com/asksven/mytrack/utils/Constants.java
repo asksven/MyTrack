@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.asksven.mytrack;
+package com.asksven.mytrack.utils;
 
+
+import com.asksven.mytrack.R;
+import com.asksven.mytrack.R.string;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -24,7 +27,7 @@ import android.content.res.Resources;
  * @author sven
  *
  */
-public class AltitudeConstants
+public class Constants
 {
 
 	/** constants for the connection status */
@@ -39,16 +42,16 @@ public class AltitudeConstants
 	public String STATUS_LOCATION_UPDATED 		= "";
 	public String BROADCAST_STATUS_CHANGED 		= "";
 
-	static AltitudeConstants m_instance = null;
-	private AltitudeConstants()
+	static Constants m_instance = null;
+	private Constants()
 	{
 	}
 	
-	public static AltitudeConstants getInstance(Context ctx)
+	public static Constants getInstance(Context ctx)
 	{		
 		if (m_instance == null)
 		{
-			m_instance = new AltitudeConstants();
+			m_instance = new Constants();
 			m_instance.STATUS_NOTIFICATION_ON 		= ctx.getString(R.string.status_notification_on);
 			m_instance.STATUS_NOT_LOGGED_IN	 		= ctx.getString(R.string.status_not_logged_in);
 			m_instance.STATUS_SERVICE_NOT_STARTED 	= ctx.getString(R.string.status_service_not_started);

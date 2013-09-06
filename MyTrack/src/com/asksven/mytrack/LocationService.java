@@ -16,8 +16,6 @@
 
 package com.asksven.mytrack;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.ActivityManager;
@@ -29,16 +27,12 @@ import android.app.Service;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.content.res.Resources;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.ConnectivityManager;
-import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -46,10 +40,10 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.asksven.android.common.location.GeoUtils;
-import com.asksven.android.common.networkutils.DataNetwork;
 import com.asksven.android.common.utils.DateUtils;
-import com.asksven.android.common.utils.MathUtils;
 import com.asksven.mytrack.utils.Configuration;
+import com.asksven.mytrack.utils.Constants;
+import com.asksven.mytrack.utils.LocationWriter;
 
 
 /**
@@ -76,16 +70,12 @@ public class LocationService extends Service implements LocationListener, OnShar
 
 	private LocationManager m_locationManager;
 	
-	private WifiStateHandler m_wifiHandler = new WifiStateHandler();
-
 	private static final String TAG = "LocationService";
 		
 	/** the connection status */
 	private String m_strStatus = "";
 	
 	private boolean m_bRegistered = false;
-
-	private ArrayList<Location> m_locationStack = null;
 	
 	private boolean bQuickChangeRunning = false;
 
@@ -137,10 +127,7 @@ public class LocationService extends Service implements LocationListener, OnShar
     {
     	super.onCreate();
     	m_instance = this;
-    	if (m_locationStack == null)
-    	{
-    		m_locationStack = new ArrayList<Location>();
-    	}
+
     	Log.i(getClass().getSimpleName(), "onCreate called");
 
         mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
@@ -148,19 +135,12 @@ public class LocationService extends Service implements LocationListener, OnShar
         // register the location listener
         this.registerLocationListener();
         
-    	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-    	boolean bHandleWifi = prefs.getBoolean("update_on_wifi_only", false);
-    	if (bHandleWifi)
-    	{
-	        // register the Wifi state receiver
-	        this.registerReceiver(m_wifiHandler, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-    	}
-        // Set up a listener whenever a key changes
+    	// Set up a listener whenever a key changes
     	PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
 
     	// set status
-    	setStatus(AltitudeConstants.getInstance(this).STATUS_UPDATE_PENDING);
+    	setStatus(Constants.getInstance(this).STATUS_UPDATE_PENDING);
     	
     	// trigger QoS alarm (will do nothing if settings say not to
    }
@@ -195,18 +175,6 @@ public class LocationService extends Service implements LocationListener, OnShar
             
     }
     
-    public ArrayList<Location> getLocationStack()
-    {
-    	return m_locationStack;
-    	
-    }
-    
-    public void clearLocationStack()
-    {
-    	Log.i(TAG, "clearing location stack");
-    	m_locationStack.clear();
-    	
-    }
     private void registerLocationListener(int intervalMs, int accuracyM)
     {
     	if (m_bRegistered)
@@ -216,14 +184,9 @@ public class LocationService extends Service implements LocationListener, OnShar
     	}
 
     	
-		// whatever Prefs say, the free version does not give any choice
-    	if (!Configuration.isFullVersion(this))
-		{
-    		intervalMs = 15 * 60 * 1000;
-    		accuracyM = 2000;
+		intervalMs = 15 * 60 * 1000;
+		accuracyM = 2000;
     		
-        	
-		}
     	Criteria criteria = new Criteria();
     	criteria.setSpeedRequired(false);
     	criteria.setAltitudeRequired(false);
@@ -234,7 +197,6 @@ public class LocationService extends Service implements LocationListener, OnShar
     	{
     		criteria.setAccuracy(Criteria.ACCURACY_FINE);
     		criteria.setPowerRequirement(Criteria.POWER_HIGH);
-    		//criteria.setBearingRequired(true);
     	}
     	else
     	{
@@ -301,7 +263,7 @@ public class LocationService extends Service implements LocationListener, OnShar
     		// activate / deactivate the notification
     		if (prefs.getBoolean("notify_status", true))
     		{
-    			notifyStatus(AltitudeConstants.getInstance(this).STATUS_NOTIFICATION_ON);
+    			notifyStatus(Constants.getInstance(this).STATUS_NOTIFICATION_ON);
     		}
     		else
     		{
@@ -348,7 +310,7 @@ public class LocationService extends Service implements LocationListener, OnShar
     	boolean bForegroundService = prefs.getBoolean("foreground_service", true);
     	if (bForegroundService)
     	{
-    		setupAsForeground(AltitudeConstants.getInstance(this).STATUS_FG_SERVICE_STARTED);
+    		setupAsForeground(Constants.getInstance(this).STATUS_FG_SERVICE_STARTED);
     	}
         // We want this service to continue running until it is explicitly
         // stopped, so return sticky.
@@ -359,7 +321,7 @@ public class LocationService extends Service implements LocationListener, OnShar
     void setupAsForeground(String strNotification)
     {
     	m_stickyNotification = new Notification(
-    			R.drawable.icon, AltitudeConstants.getInstance(this).STATUS_SERVICE_RUNNING, System.currentTimeMillis());
+    			R.drawable.icon, Constants.getInstance(this).STATUS_SERVICE_RUNNING, System.currentTimeMillis());
 		Intent i=new Intent(this, MainActivity.class);
 		
 		i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|
@@ -394,14 +356,6 @@ public class LocationService extends Service implements LocationListener, OnShar
 		m_locationManager.removeUpdates(this);
 		
 		// hack: there is no way to test whether a receiver is registered so we have to try and ignore the exception
-		try
-		{
-			unregisterReceiver(m_wifiHandler);
-		}
-		catch (IllegalArgumentException e)
-		{
-			// do nothing
-		}
 		
         // Unregister the listener whenever a key changes
         PreferenceManager.getDefaultSharedPreferences(this)
@@ -423,8 +377,6 @@ public class LocationService extends Service implements LocationListener, OnShar
 	public void onLocationChanged(Location location)
 	{
     	Log.i(TAG, "onLocationChanged called");
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
     	// we may have QoS: as the location was just updated we need to reset the alarm counter
     	setQosAlarm();
     	
@@ -432,89 +384,13 @@ public class LocationService extends Service implements LocationListener, OnShar
     	// to the update frequency / distance to be applied
     	if (isQuickChangeRunning())
     	{
-    		m_locationStack.add(location);
+    		LocationWriter.LogLocationToFile(this, location);
     	}
     	else
     	{
-    		// check if we are limiting the update frequency
-    		boolean intervalBelowLimit = false;
-    		boolean distanceBelowLimit = false;
-    		
-    		if (prefs.getBoolean("limit_update_interval", false))
-    		{
-    			long interval = (System.currentTimeMillis() - m_lastUpdatedTime) / 1000 / 60;
-    	    	int iMinInterval = 0;
-    	    	try
-    	    	{
-    	    		iMinInterval = Integer.valueOf(prefs.getString("max_update_interval", "0"));
-    	    		
-    	    	}
-    	    	catch (Exception e)
-    	    	{
-    	    		Log.e(TAG, "An error occured while reading quick action preferences");
-    	    	}
-    	    	
-    	    	Log.i(TAG, "Time since last update [Min.]: " + interval);
-    	    
-    	    	if (interval < iMinInterval)
-    	    	{
-    	    		Log.i(TAG, "Interval is below limit");
-    	    		intervalBelowLimit = true;
-    	    	}
-    		}
-    		
-    		// check if we are limiting distance between updates
-    		if (prefs.getBoolean("limit_update_accuracy", false))
-    		{
-    			if (m_lastUpdatedLoc != null)
-    			{
-	    			double distance = MathUtils.getDistanceGreatCircle(m_lastUpdatedLoc, location);
-	    			Log.i(TAG, "Distance from last update: " + distance);
-	    	    	int iMinDistance = 0;
-	    	    	try
-	    	    	{    	        	
-	    	    		iMinDistance = Integer.valueOf(prefs.getString("max_update_accuracy", "0"));
-	    	    	}
-	    	    	catch (Exception e)
-	    	    	{
-	    	    		Log.e(TAG, "An error occured while reading quick action preferences");
-	    	    	}
-	    	    	
-	    	    	if (distance < iMinDistance)
-	    	    	{
-	    	    		Log.i(TAG, "Distance is below limit");
-	    	    		distanceBelowLimit = true;
-	    	    	}
-    			}
-    			
-    		}
-    		
-    		// if both values are below limit we don't update
-    		if (distanceBelowLimit && intervalBelowLimit)
-    		{
-    			// do nothing
-    			Log.i(TAG, "Both interval and distance are below limits: location will not be queued");
-    		}
-    		else
-    		{
-    			Log.i(TAG, "Interval or distance is above limit: location is being queued");    			
-        		m_locationStack.add(location);    			
-    		}
-
+    		LocationWriter.LogLocationToFile(this, location);    			
     	}
 
-		try
-		{
-			if (!updateLatitude())
-			{	
-				Log.i(TAG, "Location added to stack. The stack has " + m_locationStack.size() + " entries.");
-				notifyStatus(m_locationStack.size() + " " + getString(R.string.locations_buffered));
-			}
-		}
-		catch (Exception e)
-		{
-			notifyStatus(m_locationStack + " " + getString(R.string.locations_buffered));
-		}
 	}
 
     /** 
@@ -537,20 +413,8 @@ public class LocationService extends Service implements LocationListener, OnShar
     	long now =System.currentTimeMillis();
     	here.setTime(now);
     	
-    	m_locationStack.add(here);
+    	LocationWriter.LogLocationToFile(this, here);
 
-		try
-		{
-			if (!updateLatitude())
-			{	
-				Log.i(TAG, "Adding location to stack. The stack has " + m_locationStack.size() + " entries.");
-				notifyStatus(m_locationStack.size() + " " + getString(R.string.locations_buffered));
-			}
-		}
-		catch (Exception e)
-		{
-			notifyStatus(m_locationStack + " " + getString(R.string.locations_buffered));
-		}
 	}
 
     /** 
@@ -576,20 +440,8 @@ public class LocationService extends Service implements LocationListener, OnShar
     	long now =System.currentTimeMillis();
     	here.setTime(now);
     	
-    	m_locationStack.add(here);
+    	LocationWriter.LogLocationToFile(this, here);
 
-		try
-		{
-			if (!updateLatitude())
-			{	
-				Log.i(TAG, "Adding location to stack. The stack has " + m_locationStack.size() + " entries.");
-				notifyStatus(m_locationStack.size() + " " + getString(R.string.locations_buffered));
-			}
-		}
-		catch (Exception e)
-		{
-			notifyStatus(m_locationStack + " " + getString(R.string.locations_buffered));
-		}
 	}
 
     @Override
@@ -660,31 +512,6 @@ public class LocationService extends Service implements LocationListener, OnShar
 
 	}	
 
-	protected boolean updateLatitude()
-	{
-		boolean bRet = true;
-
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-    	boolean bEnabled = prefs.getBoolean("enabled", true);
-    	
-    	// if not enabled forget the location
-    	if (!bEnabled)
-    	{
-    		clearLocationStack();
-    		return true;
-    	}
-    	
-    	Log.i(TAG, "updateLatitude called, prepating to update " + m_locationStack.size() + " locations");
-
-    	// @todo:: save location
-    	
-		
-		return bRet;
-	}
-
-
-
 	/**
 	 * Notify status change in notification bar (if enabled)
 	 */
@@ -714,18 +541,18 @@ public class LocationService extends Service implements LocationListener, OnShar
 	/**
 	 * Notify location change in notification bar (if enabled)
 	 */
-	public void notifyCurrentLocation()
+	public void notifyCurrentLocation(Location location)
 	{
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-    	String strStatus = AltitudeConstants.getInstance(this).STATUS_LOCATION_UPDATED;
+    	String strStatus = Constants.getInstance(this).STATUS_LOCATION_UPDATED;
     	
     	boolean bNotify 	= prefs.getBoolean("notify_status", true);
     	boolean bNotifyGeo 	= prefs.getBoolean("notify_geodata", false);
     	if (bNotify && bNotifyGeo)
     	{
-			if ( (bNotifyGeo) && (m_locationStack != null) && (!m_locationStack.isEmpty()) )
+			if ( (bNotifyGeo) && (location != null) )
  			{
-				m_strCurrentLocation = GeoUtils.getNearestAddress(this, m_locationStack.get(m_locationStack.size()-1));
+				m_strCurrentLocation = GeoUtils.getNearestAddress(this, location);
 				strStatus = strStatus
 						+ ": "
 						+ m_strCurrentLocation;
@@ -779,7 +606,7 @@ public class LocationService extends Service implements LocationListener, OnShar
 	public void setStatus(String strStatus)
 	{
 		m_strStatus = strStatus;
-		sendBroadcast(new Intent(AltitudeConstants.getInstance(this).BROADCAST_STATUS_CHANGED));
+		sendBroadcast(new Intent(Constants.getInstance(this).BROADCAST_STATUS_CHANGED));
 	}
 	
 	/**
@@ -1062,20 +889,6 @@ public class LocationService extends Service implements LocationListener, OnShar
 		return m_strCurrentLocation;
 	}
 
-	/**
-	 * Returns the number of buffered locations
-	 * @return the number 
-	 */
-	public int getBufferSize()
-	{
-		int iRet = 0; 
-		if ( (m_locationStack != null) && (m_locationStack.size() > 0) )
-		{
-			iRet = m_locationStack.size();
-		}
-		return iRet;
-	}
-	
 
 	protected static boolean isServiceRunning(Context ctx)
 	{
@@ -1109,9 +922,6 @@ public class LocationService extends Service implements LocationListener, OnShar
 		// cancel any exiting alarms
 		cancelQosAlarm();
 
-		// create a new one starting to count NOW
-		Calendar cal = Calendar.getInstance();
-		
     	String strInterval = prefs.getString("update_interval", "15");
     	if (!Configuration.isFullVersion(this))
 		{

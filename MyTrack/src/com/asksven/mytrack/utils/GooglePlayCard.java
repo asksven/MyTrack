@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.asksven.mytrack;
+package com.asksven.mytrack.utils;
 
 /**
  * @author sven
@@ -27,6 +27,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.asksven.mytrack.R;
+import com.asksven.mytrack.R.drawable;
+import com.asksven.mytrack.R.id;
+import com.asksven.mytrack.R.layout;
 import com.fima.cardsui.objects.Card;
 
 public class GooglePlayCard extends Card

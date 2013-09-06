@@ -20,11 +20,11 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.asksven.android.common.utils.DateUtils;
-import com.asksven.mytrack.AltitudeConstants;
 import com.asksven.mytrack.LocationService;
 import com.asksven.mytrack.PreferencesActivity;
 import com.asksven.mytrack.ReadmeActivity;
 import com.asksven.mytrack.utils.Configuration;
+import com.asksven.mytrack.utils.Constants;
 import com.google.ads.AdRequest;
 import com.google.ads.AdView;
 
@@ -148,7 +148,7 @@ public class MainActivity extends SherlockActivity
 		{
 			m_connectionUpdateReceiver = new ConnectionUpdateReceiver();
 		}
-		IntentFilter intentFilter = new IntentFilter(AltitudeConstants.getInstance(this).BROADCAST_STATUS_CHANGED);
+		IntentFilter intentFilter = new IntentFilter(Constants.getInstance(this).BROADCAST_STATUS_CHANGED);
 		registerReceiver(m_connectionUpdateReceiver, intentFilter);
 		
 		// update the status
@@ -247,7 +247,7 @@ public class MainActivity extends SherlockActivity
 		}
 		else
 		{
-			statusTextView.setText(AltitudeConstants.getInstance(this).STATUS_SERVICE_NOT_STARTED);
+			statusTextView.setText(Constants.getInstance(this).STATUS_SERVICE_NOT_STARTED);
 		}
 				
 	    final TableLayout statusLayout = (TableLayout) findViewById(R.id.layoutStatus);
@@ -325,7 +325,7 @@ public class MainActivity extends SherlockActivity
 	    @Override
 	    public void onReceive(Context context, Intent intent)
 	    {
-	        if (intent.getAction().equals(AltitudeConstants.getInstance(MainActivity.this).BROADCAST_STATUS_CHANGED))
+	        if (intent.getAction().equals(Constants.getInstance(MainActivity.this).BROADCAST_STATUS_CHANGED))
 	        {
 	        	TextView statusTextView = (TextView) findViewById(R.id.textViewStatus);
 	        	LocationService myService = LocationService.getInstance();
@@ -343,7 +343,7 @@ public class MainActivity extends SherlockActivity
 	        	}
 	        	else
 	        	{
-	        		statusTextView.setText(AltitudeConstants.getInstance(MainActivity.this).STATUS_SERVICE_NOT_STARTED);
+	        		statusTextView.setText(Constants.getInstance(MainActivity.this).STATUS_SERVICE_NOT_STARTED);
 	        	}
 	        }
 	    }
@@ -498,7 +498,7 @@ public class MainActivity extends SherlockActivity
     	}
     	else
     	{
-    		Toast.makeText(this, AltitudeConstants.getInstance(this).STATUS_SERVICE_NOT_STARTED, Toast.LENGTH_SHORT).show();
+    		Toast.makeText(this, Constants.getInstance(this).STATUS_SERVICE_NOT_STARTED, Toast.LENGTH_SHORT).show();
     	}
 	}
 	
