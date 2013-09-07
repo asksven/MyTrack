@@ -321,7 +321,7 @@ public class LocationService extends Service implements LocationListener, OnShar
     void setupAsForeground(String strNotification)
     {
     	m_stickyNotification = new Notification(
-    			R.drawable.icon, Constants.getInstance(this).STATUS_SERVICE_RUNNING, System.currentTimeMillis());
+    			R.drawable.ic_launcher, Constants.getInstance(this).STATUS_SERVICE_RUNNING, System.currentTimeMillis());
 		Intent i=new Intent(this, MainActivity.class);
 		
 		i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|
@@ -329,7 +329,7 @@ public class LocationService extends Service implements LocationListener, OnShar
 		
 		PendingIntent pi=PendingIntent.getActivity(this, 0, i, 0);
 
-		m_stickyNotification.setLatestEventInfo(this, "ALTitude", strNotification, pi);
+		m_stickyNotification.setLatestEventInfo(this, getString(R.string.app_name), strNotification, pi);
 		m_stickyNotification.flags|=Notification.FLAG_NO_CLEAR;
 		
 		if (isServiceRunning(this))
@@ -528,7 +528,7 @@ public class LocationService extends Service implements LocationListener, OnShar
     		else
     		{
 		    	Notification notification = new Notification(
-		    			R.drawable.icon, strStatus, System.currentTimeMillis());
+		    			R.drawable.ic_launcher, strStatus, System.currentTimeMillis());
 		    	PendingIntent contentIntent = PendingIntent.getActivity(
 		    			this, 0, new Intent(this, MainActivity.class), 0);
 		    	notification.setLatestEventInfo(
