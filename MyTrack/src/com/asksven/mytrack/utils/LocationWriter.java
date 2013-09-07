@@ -75,11 +75,10 @@ public class LocationWriter
 
 				fw = new FileWriter(jsonFile);
 				out = new BufferedWriter(fw);
-				out.append(timestamp + ": " 
-						+ "LAT=" + myLoc.getLatitude()
-						+ "LONG=" + myLoc.getLongitude() + "\n");
+				out.append("TrackEntry\n");
 				Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
 				out.append(gson.toJson(new TrackEntry(myLoc)));
+				out.append("\n");
 				out.close();
 
 			}
