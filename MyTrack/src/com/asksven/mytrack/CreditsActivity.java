@@ -36,7 +36,7 @@ public class CreditsActivity extends SherlockActivity
 	{ "ActionBarSherlock", "CardUI", "Google GSON" };
 	
 	private final String[] m_authors = new String[]
-	{ "Jake Wharton", "Google" };
+	{ "Jake Wharton", "Louis Teboul (Androguide)", "Google" };
 	
 	private final String[] m_licenses = new String[]
 	{ "Apache 2.0", "Apache 2.0", "Apache 2.0" };
