@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="MyTrackHolo" parent="android:Theme.Light">
+
+    <item name="android:editTextStyle">@style/EditTextMyTrackHolo</item>
+
+    <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewMyTrackHolo</item>
+
+    <item name="android:checkboxStyle">@style/CheckBoxMyTrackHolo</item>
+
+    <item name="android:radioButtonStyle">@style/RadioButtonMyTrackHolo</item>
+
+    <item name="android:buttonStyle">@style/ButtonMyTrackHolo</item>
+
+    <item name="android:imageButtonStyle">@style/ImageButtonMyTrackHolo</item>
+
+    <item name="android:spinnerStyle">@style/SpinnerMyTrackHolo</item>
+
+    <item name="android:dropDownSpinnerStyle">@style/SpinnerMyTrackHolo.DropDown</item>
+
+    <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItemMyTrackHolo</item>
+
+    <item name="android:progressBarStyleHorizontal">@style/ProgressBarMyTrackHolo</item>
+
+    <item name="android:seekBarStyle">@style/SeekBarMyTrackHolo</item>
+
+    <item name="android:ratingBarStyle">@style/RatingBarMyTrackHolo</item>
+
+    <item name="android:ratingBarStyleIndicator">@style/RatingBarBigMyTrackHolo</item>
+
+    <item name="android:ratingBarStyleSmall">@style/RatingBarSmallMyTrackHolo</item>
+
+    <item name="android:buttonStyleToggle">@style/ToggleMyTrackHolo</item>
+
+    <item name="android:listViewStyle">@style/ListViewMyTrackHolo</item>
+
+    <item name="android:listViewWhiteStyle">@style/ListViewMyTrackHolo.White</item>
+
+    <item name="android:spinnerItemStyle">@style/SpinnerItemMyTrackHolo</item>
+
+  </style>
+
+</resources>
