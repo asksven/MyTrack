@@ -91,7 +91,7 @@ public class MainActivity extends SherlockActivity
         	}
         	else
         	{
-        		hintTextView.setText("");
+        		hintTextView.setText(R.string.full_version_available);
 	    		Log.i(TAG, "free version was detected");
         	}
         	PackageInfo pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);

@@ -57,7 +57,7 @@
     <string name="status_notification_on">Notification activated</string>
     <string name="locations_buffered">Location(s) buffered</string>
     <string name="status_fg_service_started">Foreground Service Started</string>
-    <string name="full_version_available">Add-free full version available</string>
+    <string name="full_version_available">Ad free full version available</string>
     <string name="dialog_quick_settings_title">Location Quick Settings</string>
     <string name="dialog_status_buffered">Buffered</string>
     <string name="dialog_status_interval">Interval [s]</string>
