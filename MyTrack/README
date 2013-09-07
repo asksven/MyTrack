@@ -2,6 +2,10 @@ Credits:
 This project makes use of:
 - ActionbarSherlock: https://github.com/JakeWharton/ActionBarSherlock
 - CardsUI: https://github.com/Androguide/cardsui-for-android 
+- google gson http://code.google.com/p/google-gson/downloads
+
+all licensed under the terms of the Apache License Version 2.0, http://www.apache.org/licenses/
+
 
 Building MyTrack
 

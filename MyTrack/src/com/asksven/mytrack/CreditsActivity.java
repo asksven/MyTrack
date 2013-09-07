@@ -33,16 +33,16 @@ public class CreditsActivity extends SherlockActivity
 	private CardUI m_cardView;
 
 	private final String[] m_libs = new String[]
-	{ "ActionBarSherlock", "CardUI" };
+	{ "ActionBarSherlock", "CardUI", "Google GSON" };
 	
 	private final String[] m_authors = new String[]
-	{ "Jake Wharton", "" };
+	{ "Jake Wharton", "Google" };
 	
 	private final String[] m_licenses = new String[]
-	{ "Apache 2.0", "Apache 2.0" };
+	{ "Apache 2.0", "Apache 2.0", "Apache 2.0" };
 	
 	private final String[] m_urls = new String[]
-	{ "", ""};
+	{ "", "", "http://code.google.com/p/google-gson/downloads"};
 
 	private final String[] m_colors = new String[]
 	{ "#33b6ea", "#e00707",

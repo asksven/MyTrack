@@ -19,6 +19,8 @@ import android.widget.Toast;
 import com.asksven.andoid.common.contrib.Util;
 import com.asksven.android.common.utils.DataStorage;
 import com.asksven.android.common.utils.DateUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * @author sven
@@ -27,7 +29,7 @@ import com.asksven.android.common.utils.DateUtils;
 public class LocationWriter
 {
 	private static final String TAG = "LocationWriter";
-	private static final String FILENAME = "MyTrack.txt";
+	private static final String FILENAME = "MyTrack";
 	
 	public static void LogLocationToFile(Context context, Location myLoc)
 	{
@@ -60,14 +62,26 @@ public class LocationWriter
 			if (root.canWrite())
 			{
 				String timestamp = DateUtils.now("yyyy-MM-dd_HHmmssSSS");
-				File dumpFile = new File(root, FILENAME);
+				File textFile = new File(root, FILENAME + ".txt");
 
-				FileWriter fw = new FileWriter(dumpFile);
+				FileWriter fw = new FileWriter(textFile);
 				BufferedWriter out = new BufferedWriter(fw);
-				out.write(timestamp + ": " 
+				out.append(timestamp + ": " 
 						+ "LAT=" + myLoc.getLatitude()
-						+ "LONG=" + myLoc.getLongitude());
+						+ "LONG=" + myLoc.getLongitude() + "\n");
 				out.close();
+				
+				File jsonFile = new File(root, FILENAME + ".json");
+
+				fw = new FileWriter(jsonFile);
+				out = new BufferedWriter(fw);
+				out.append(timestamp + ": " 
+						+ "LAT=" + myLoc.getLatitude()
+						+ "LONG=" + myLoc.getLongitude() + "\n");
+				Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+				out.append(gson.toJson(new TrackEntry(myLoc)));
+				out.close();
+
 			}
 			else
 			{
