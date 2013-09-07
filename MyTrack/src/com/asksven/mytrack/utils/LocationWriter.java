@@ -64,21 +64,21 @@ public class LocationWriter
 				String timestamp = DateUtils.now("yyyy-MM-dd_HHmmssSSS");
 				File textFile = new File(root, FILENAME + ".txt");
 
-				FileWriter fw = new FileWriter(textFile);
+				FileWriter fw = new FileWriter(textFile, true);
 				BufferedWriter out = new BufferedWriter(fw);
-				out.append(timestamp + ": " 
+				out.write(timestamp + ": " 
 						+ "LAT=" + myLoc.getLatitude()
 						+ "LONG=" + myLoc.getLongitude() + "\n");
 				out.close();
 				
 				File jsonFile = new File(root, FILENAME + ".json");
 
-				fw = new FileWriter(jsonFile);
+				fw = new FileWriter(jsonFile, true);
 				out = new BufferedWriter(fw);
-				out.append("TrackEntry\n");
+				out.write("TrackEntry\n");
 				Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
-				out.append(gson.toJson(new TrackEntry(myLoc)));
-				out.append("\n");
+				out.write(gson.toJson(new TrackEntry(myLoc)));
+				out.write("\n");
 				out.close();
 
 			}
